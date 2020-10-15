@@ -1,0 +1,20 @@
+{
+  "name": "raid-organizer",
+  "version": "0.0.1",
+  "description": "",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git"
+  },
+  "scripts": {
+    "buildPushDEV": "grunt --target=dev build_push",
+    "buildPushPROD": "grunt --target=prod build_push"
+  },
+  "devDependencies": {
+    "gas-lib": "latest",
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-preprocess": "^5.1.0"
+  }
+}

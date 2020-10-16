@@ -1,17 +1,20 @@
 /**
  * This file exist to provide auto-completion and linking between Server side code and Client side code in Apps Script
- * 
+ *
  * Add all functions callable from client side to the google.script.run prototype
  */
 
 
 //<editor-fold desc="# Stubs for google.script.run">
 
-GoogleScriptRun = function () {};
+import {onEdit} from './src/Code';
+
+const GoogleScriptRun = function () {};
 // NEVER DO THAT in normal code, this overwrite the prototype, here we do this of auto-completion only
 GoogleScriptRun.prototype = {
-  // onInstall,
-  // onOpen,
+	// onInstall,
+	// onOpen,
+	onEdit,
 };
 
 
@@ -22,31 +25,31 @@ GoogleScriptRun.prototype = {
  * @return {GoogleScriptRun}
  */
 GoogleScriptRun.prototype.withSuccessHandler = function (successHandler) {
-  successHandler('serverResponse', this._userObject);
-  return this;
+	successHandler('serverResponse', this._userObject);
+	return this;
 };
 /**
  * @param {function(error: Error, userObject: *)} failureHandler
  * @return {GoogleScriptRun}
  */
 GoogleScriptRun.prototype.withFailureHandler = function (failureHandler) {
-  failureHandler(new Error('errorMessage'), this._userObject);
-  return this;
+	failureHandler(new Error('errorMessage'), this._userObject);
+	return this;
 };
 /**
  * @param {*} userObject
  * @return {GoogleScriptRun}
  */
 GoogleScriptRun.prototype.withUserObject = function (userObject) {
-  this._userObject = userObject;
-  return this;
+	this._userObject = userObject;
+	return this;
 };
 
 // noinspection ES6ConvertVarToLetConst
 var google = {
-  script: {
-    run: new GoogleScriptRun()
-  }
+	script: {
+		run: new GoogleScriptRun(),
+	},
 };
 
 //</editor-fold>

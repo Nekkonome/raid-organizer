@@ -33,7 +33,8 @@ module.exports = function (grunt) {
 	{
 		try {
 			CONFIG = require(`./build/config/${TARGET}_config`);
-		} catch (e) {
+		}
+		catch (e) {
 			grunt['fail'].fatal(`\x1b[31mERROR: "\x1b[0m\x1b[41m\x1b[30m${TARGET}\x1b[31m\x1b[0m\x1b[31m" is not a valid target build\x1b[0m`);
 			
 			// not needed, grunt.fail.fatal already exits
@@ -67,28 +68,31 @@ module.exports = function (grunt) {
 						expand: true,
 						cwd: 'build/src/', // build source folder
 						src: [
-							'**/*' // Wipe everything
-						]
-					}
-				]
-			}
+							'**/*', // Wipe everything
+						],
+					},
+				],
+			},
 		},
 		copy: {
 			'build': {
-				files: [{
-					expand: true,
-					cwd: 'src/',
-					src: [
-						'**/*.gs',
-						'**/*.js',
-						'**/*.html',
-						'appsscript.json',
-					],
-					dest: 'build/src/',
-					flatten: false,
-					filter: 'isFile',
-					'rename': (dest, src) => dest + src.replace(/\.gs\.js$/, '.js'),
-				}]
+				files: [
+					{
+						expand: true,
+						cwd: 'src/',
+						src: [
+							'**/*.gs',
+							'**/*.js',
+							'**/*.ts',
+							'**/*.html',
+							'appsscript.json',
+						],
+						dest: 'build/src/',
+						flatten: false,
+						filter: 'isFile',
+						'rename': (dest, src) => dest + src.replace(/\.gs\.js$/, '.js'),
+					},
+				],
 			},
 			'dependencies': {
 				get files() {
@@ -118,6 +122,7 @@ module.exports = function (grunt) {
 							src: [
 								'**/*.gs',
 								'**/*.js',
+								'**/*.ts',
 							],
 							dest: `build/src/lib/${pkgName}/`,
 							flatten: false, // set flatten to false once we use clasp folder name
@@ -154,10 +159,10 @@ module.exports = function (grunt) {
  */`;
 						
 						return `${header}\n\n${content}`;
-					}
-				}
+					},
+				},
 				
-			}
+			},
 		},
 		jsonPatch: {
 			'build': {
@@ -184,15 +189,17 @@ module.exports = function (grunt) {
 					context: CONFIG.context,
 					type: 'js',
 				},
-				files: [{
-					expand: true,
-					cwd: 'build/src/',
-					src: [
-						'**/*.js',
-						'**/*.js.html',
-					],
-					dest: 'build/src/',
-				}],
+				files: [
+					{
+						expand: true,
+						cwd: 'build/src/',
+						src: [
+							'**/*.js',
+							'**/*.js.html',
+						],
+						dest: 'build/src/',
+					},
+				],
 			},
 		},
 		clasp: {
@@ -237,8 +244,9 @@ module.exports = function (grunt) {
 			
 			// read config file
 			try {
-				config = grunt.file.readJSON(srcFolder + src)
-			} catch (e) {
+				config = grunt.file.readJSON(srcFolder + src);
+			}
+			catch (e) {
 			}
 			
 			// update the provided parameters
@@ -258,7 +266,8 @@ module.exports = function (grunt) {
 						else if (Object.keys(configDrillDown).length === 0 && path[i] === '-1') {
 							configDrillDown = [{}];
 							path[i] = 0;
-						} else {
+						}
+						else {
 							configDrillDown[path[i]] = {};
 						}
 					}
@@ -288,11 +297,13 @@ module.exports = function (grunt) {
 		}
 		
 		// Init files object
-		let files = this.data.files || [{
-			src: this.files[0].src[0],
-			dest: this.files[0].dest,
-			data: this.data.data
-		}];
+		let files = this.data.files || [
+			{
+				src: this.files[0].src[0],
+				dest: this.files[0].dest,
+				data: this.data.data,
+			},
+		];
 		
 		// Patch every JSON files
 		files.forEach(({src, dest, data}) => updateJsonFile(src, dest, data));
@@ -314,7 +325,7 @@ module.exports = function (grunt) {
 		
 		function clasp(cmd) {
 			let res = child_process.execSync(`clasp ${cmd}`, {
-				cwd: __dirname + '/' + param.runDir
+				cwd: __dirname + '/' + param.runDir,
 			});
 			
 			// Get string res
